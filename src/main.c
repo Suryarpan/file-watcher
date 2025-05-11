@@ -21,19 +21,23 @@
 
 #include "config.h"
 
+#include "file_watch.h"
 #include <glib.h>
 #include <stdlib.h>
 
 gint main(gint argc, gchar *argv[]) {
     g_autoptr(GOptionContext) context = NULL;
     g_autoptr(GError) error = NULL;
+    // command line args
     gboolean version = FALSE;
+    g_auto(GStrv) other_fds = NULL;
     GOptionEntry main_entries[] = {
-        {"version", 0, 0, G_OPTION_ARG_NONE, &version, "Show program version"},
+        {"version", 0, 0, G_OPTION_ARG_NONE, &version, "Show program version", NULL},
+        {G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &other_fds, NULL, NULL},
         {NULL},
     };
 
-    context = g_option_context_new("- utility tool to watch file changes in directory");
+    context = g_option_context_new("FILE1 FILE2 DIR1 DIR2");
     g_option_context_add_main_entries(context, main_entries, NULL);
 
     if (!g_option_context_parse(context, &argc, &argv, &error)) {
@@ -45,6 +49,13 @@ gint main(gint argc, gchar *argv[]) {
         g_printerr("%s\n", PACKAGE_VERSION);
         return EXIT_SUCCESS;
     }
+
+    if (g_strv_length(other_fds) == 0) {
+        g_printerr("%s\n", "provide a list of files or directories to watch");
+        return EXIT_FAILURE;
+    }
+
+    add_fd_to_watch(other_fds);
 
     return EXIT_SUCCESS;
 }
