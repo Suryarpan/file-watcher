@@ -1,0 +1,11 @@
+{
+  "[c]": {
+    "editor.wordBasedSuggestions": "off",
+    "editor.semanticHighlighting.enabled": true,
+    "editor.stickyScroll.defaultModel": "foldingProviderModel",
+    "editor.suggest.insertMode": "replace"
+  },
+  "C_Cpp.autocomplete": "default",
+  "C_Cpp.formatting": "clangFormat",
+  "C_Cpp.clang_format_sortIncludes": true
+}
