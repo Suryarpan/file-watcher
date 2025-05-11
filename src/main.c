@@ -1,6 +1,6 @@
 /* main.c
  *
- * Copyright 2025 Popey M Slayer
+ * Copyright 2025 Suryarpan Chowdhury
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,32 +24,27 @@
 #include <glib.h>
 #include <stdlib.h>
 
-gint
-main (gint   argc,
-      gchar *argv[])
-{
-	g_autoptr(GOptionContext) context = NULL;
-	g_autoptr(GError) error = NULL;
-	gboolean version = FALSE;
-	GOptionEntry main_entries[] = {
-		{ "version", 0, 0, G_OPTION_ARG_NONE, &version, "Show program version" },
-		{ NULL }
-	};
+gint main(gint argc, gchar *argv[]) {
+    g_autoptr(GOptionContext) context = NULL;
+    g_autoptr(GError) error = NULL;
+    gboolean version = FALSE;
+    GOptionEntry main_entries[] = {
+        {"version", 0, 0, G_OPTION_ARG_NONE, &version, "Show program version"},
+        {NULL},
+    };
 
-	context = g_option_context_new ("- my command line tool");
-	g_option_context_add_main_entries (context, main_entries, NULL);
+    context = g_option_context_new("- utility tool to watch file changes in directory");
+    g_option_context_add_main_entries(context, main_entries, NULL);
 
-	if (!g_option_context_parse (context, &argc, &argv, &error))
-	{
-		g_printerr ("%s\n", error->message);
-		return EXIT_FAILURE;
-	}
+    if (!g_option_context_parse(context, &argc, &argv, &error)) {
+        g_printerr("%s\n", error->message);
+        return EXIT_FAILURE;
+    }
 
-	if (version)
-	{
-		g_printerr ("%s\n", PACKAGE_VERSION);
-		return EXIT_SUCCESS;
-	}
+    if (version) {
+        g_printerr("%s\n", PACKAGE_VERSION);
+        return EXIT_SUCCESS;
+    }
 
-	return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
